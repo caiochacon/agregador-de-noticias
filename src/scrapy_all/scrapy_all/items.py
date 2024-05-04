@@ -5,7 +5,7 @@
 
 import scrapy
 
-MAX_PAGES = 2
+MAX_PAGES = 5
 
 class ScrapyAllItem(scrapy.Item):
     # define the fields for your item here like:
