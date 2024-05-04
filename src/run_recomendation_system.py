@@ -54,7 +54,7 @@ class RunRecomendationSystem:
             new_sent = self.tfidf_vectorizer.transform([new_sent])
             self.idx_recomendations.extend(self.sentences_sym_calculator.sym_by_date(new_sent, new_docs_tfidf_matrix, self.new_doc['normalized_data_scores'].values, 20, 3))
 
-        dataset_recomendations = self.new_doc.iloc[self.idx_recomendations]
+        dataset_recomendations = pd.DataFrame(self.new_doc.iloc[self.idx_recomendations])
 
         return self.dataset_sentences, dataset_recomendations
     
