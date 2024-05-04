@@ -9,12 +9,7 @@ from itemadapter import ItemAdapter
 import re
 from datetime import datetime, timedelta
 import pandas as pd
-import scrapy.exceptions 
-
-
-import csv
 import os
-from scrapy.exceptions import DropItem
 
 class PandasCsvPipeline:
     def __init__(self):
@@ -22,7 +17,7 @@ class PandasCsvPipeline:
 
     def open_spider(self, spider):
         # Verifica se o arquivo já existe
-        self.file_exists = os.path.exists('../../data/pandas_output.csv')
+        self.file_exists = os.path.exists('../../data/notices.csv')
 
     def close_spider(self, spider):
         # Cria um DataFrame a partir da lista de itens
@@ -30,7 +25,7 @@ class PandasCsvPipeline:
 
         if self.file_exists:
             # Se o arquivo já existir, carregue-o e adicione os novos dados
-            existing_df = pd.read_csv('../../data/pandas_output.csv', encoding='utf-8')
+            existing_df = pd.read_csv('../../data/notices.csv', encoding='utf-8')
             df = pd.concat([existing_df, df], ignore_index=True)
         
         # Remove duplicatas e valores nulos
@@ -40,7 +35,7 @@ class PandasCsvPipeline:
         
         
         # Salva no modo de adição (append), sem índice
-        df.to_csv('../../data/pandas_output.csv', index=False, encoding='utf-8')
+        df.to_csv('../../data/notices.csv', index=False, encoding='utf-8')
 
     def process_item(self, item, spider):
         # Adiciona o item à lista
