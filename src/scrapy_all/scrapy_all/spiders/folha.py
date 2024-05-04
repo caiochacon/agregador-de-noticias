@@ -20,7 +20,7 @@ class FolhaSpider(scrapy.Spider):
         yield from self.parse_article(item, response)
 
       next_page = response.css(".c-pagination__item+ .c-pagination__arrow a::attr(href)").get() #all()[:-2]
-      if next_page is not None and self.page_counter < self.max_pages:
+      if next_page is not None and int(self.page_counter) < int(self.max_pages):
           yield response.follow(next_page, self.parse)
    
 

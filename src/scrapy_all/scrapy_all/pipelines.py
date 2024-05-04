@@ -9,13 +9,44 @@ from itemadapter import ItemAdapter
 import re
 from datetime import datetime, timedelta
 import pandas as pd
+import scrapy.exceptions 
 
-class ScrapyDataset(object):
+
+import csv
+import os
+from scrapy.exceptions import DropItem
+
+class PandasCsvPipeline:
+    def __init__(self):
+        self.items = []
+
+    def open_spider(self, spider):
+        # Verifica se o arquivo já existe
+        self.file_exists = os.path.exists('../../data/pandas_output.csv')
+
+    def close_spider(self, spider):
+        # Cria um DataFrame a partir da lista de itens
+        df = pd.DataFrame(self.items)
+
+        if self.file_exists:
+            # Se o arquivo já existir, carregue-o e adicione os novos dados
+            existing_df = pd.read_csv('../../data/pandas_output.csv', encoding='utf-8')
+            df = pd.concat([existing_df, df], ignore_index=True)
+        
+        # Remove duplicatas e valores nulos
+        df = df.drop_duplicates(subset=['title'])  # Remove duplicatas
+        df = df.dropna(how='any')  # Remove valores nulos
+        df["publication_date"] = pd.to_datetime(df["publication_date"], format='mixed', errors='coerce')
+        
+        
+        # Salva no modo de adição (append), sem índice
+        df.to_csv('../../data/pandas_output.csv', index=False, encoding='utf-8')
+
     def process_item(self, item, spider):
-        new_data = pd.to_datetime(item["publication_date"], format='mixed', errors='coerce')
-        item["publication_date"] = new_data
+        # Adiciona o item à lista
+        self.items.append(dict(item))
         return item
-    
+
     
 class ScrapyG1Pipeline(object):
     def process_item(self, item, spider):
@@ -105,7 +136,10 @@ class ScrapyFolhaPipeline(object):
             for month_name, month_num in months.items():
                 date_str = date_str.replace(month_name, month_num)
             
-            formatted_date = datetime.strptime(date_str, '%d.%m.%Y às %Hh%M')
+            try:
+                formatted_date = datetime.strptime(date_str, '%d.%m.%Y às %Hh%M')
+            except:
+                formatted_date = datetime.strptime(date_str, '%d.%m.%Y à %Hh%M')
             
             item['publication_date'] = formatted_date
         

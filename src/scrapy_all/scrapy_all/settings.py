@@ -92,22 +92,24 @@ FEED_EXPORT_ENCODING = "utf-8"
 
 
 ITEM_PIPELINES = {
+    "scrapy_all.pipelines.PandasCsvPipeline": 400,
     "scrapy_all.pipelines.ScrapyFolhaPipeline": 300,
     "scrapy_all.pipelines.ScrapyG1Pipeline": 200,
     "scrapy_all.pipelines.ScrapyCartacapitalPipeline": 100,
     }
 
 
-FEEDS = {
-    '../../data/notices.csv': {
-        'format': 'csv',
-        'encoding': 'utf8',
-        'store_empty': False,
-        'fields': ['title', 'text', 'category', 'publication_date', 'source', 'image', 'link'],  # Pode especificar uma lista de campos para incluir
-        'indent': None,
-        'item_export_kwargs': {
-            'include_headers_line': True,  # Inclui linha de cabeçalho no CSV
-            'join_multivalued': ', ',  # Define separador para listas
-        },
-    },
-}
+# FEEDS = {
+#     '../../data/notices.csv': {
+#         'format': 'csv',
+#         'encoding': 'utf8',
+#         'store_empty': False,
+#         'fields': ['title', 'text', 'category', 'publication_date', 'source', 'image', 'link'],  # Pode especificar uma lista de campos para incluir
+#         'indent': None,
+#         'storage': 'scrapy_all.custom_storage.DeduplicationCSVFeedStorage',  # Aplica a deduplicação
+#         'item_export_kwargs': {
+#             'include_headers_line': True,  # Inclui linha de cabeçalho no CSV
+#             'join_multivalued': ', ',  # Define separador para listas
+#         },
+#     },
+# }
