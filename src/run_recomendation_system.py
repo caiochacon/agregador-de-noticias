@@ -30,28 +30,33 @@ class RunRecomendationSystem:
 
     # Docs são um dataframe [title, publication_date]
 
-    def run(self, raw_sentence, new_docs):
+    def run(self, dataset_sentences, new_docs):
         
-        self.raw_sentence = raw_sentence
+        self.dataset_sentences = dataset_sentences.copy()
 
         self.new_doc = new_docs.copy()
         
 
-        #self.new_doc['publication_date'] = pd.to_datetime(self.new_doc['publication_date'], format='mixed', errors='coerce')
+        self.new_doc['publication_date'] = pd.to_datetime(self.new_doc['publication_date'], format='mixed', errors='coerce')
 
         self.new_doc['normalized_data_scores'] = self.data_scorer_calculator.calculate_data_score(self.new_doc['publication_date'])
         self.new_doc.loc[:, 'sentences'] = self.new_doc.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
 
-        new_sent = self.sentece_cleaner.clear_sentence(raw_sentence)
-        new_sent = self.tfidf_vectorizer.transform([new_sent])
-
-
+        self.dataset_sentences.loc[:, 'sentences'] = dataset_sentences.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
+        #new_sent = self.sentece_cleaner.clear_sentence(raw_sentence)
+        #new_sent = self.tfidf_vectorizer.transform([new_sent])
 
         new_docs_tfidf_matrix = self.tfidf_vectorizer.transform(self.new_doc['sentences'].values)
+        self.idx_recomendations = []
 
-        self.idx_recomendations = self.sentences_sym_calculator.sym_by_date(new_sent, new_docs_tfidf_matrix, self.new_doc['normalized_data_scores'].values, 20, 3)
+        for new_sentence in self.dataset_sentences['sentences'].values:
+            new_sent = self.sentece_cleaner.clear_sentence(new_sentence)
+            new_sent = self.tfidf_vectorizer.transform([new_sent])
+            self.idx_recomendations.extend(self.sentences_sym_calculator.sym_by_date(new_sent, new_docs_tfidf_matrix, self.new_doc['normalized_data_scores'].values, 20, 3))
 
-        return self.idx_recomendations
+        dataset_recomendations = self.new_doc.iloc[self.idx_recomendations]
+
+        return self.dataset_sentences, dataset_recomendations
     
     def show_recomendations(self):
 
