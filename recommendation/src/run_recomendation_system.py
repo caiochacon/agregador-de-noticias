@@ -1,32 +1,36 @@
+import sys
+import os
+import pickle
+
+sys.path.append('..')
+
 import pandas as pd
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from src.sentence_cleaner import SentenceCleaner
-from src.data_scorer_calculator import DataScorerCalculator
-from src.sentences_similarity_calculator import SentenceSimilarityCalculator
+from utils.sentence_cleaner import SentenceCleaner
+from utils.data_scorer_calculator import DataScorerCalculator
+from utils.sentences_similarity_calculator import SentenceSimilarityCalculator
 
 COEF_WHEIGHT_DATE = 20
 
 class RunRecomendationSystem:
 
-    def __init__(self, dataset):
+    def __init__(self, path_to_vectorizer = "../models/tfidf_vectorizer.pkl"):
 
-        self.dataset = dataset.copy()
-
-        self.dataset['publication_date'] = pd.to_datetime(self.dataset['publication_date'], format='mixed', errors='coerce')
-       # self.dataset = self.dataset.dropna(subset=['title','publication_date'])
-       # self.dataset = self.dataset.drop_duplicates(subset=['title'])
+        self.path_to_vectorizer = path_to_vectorizer
 
         self.data_scorer_calculator = DataScorerCalculator()
         self.sentece_cleaner = SentenceCleaner()
-        self.tfidf_vectorizer = TfidfVectorizer()
         self.sentences_sym_calculator = SentenceSimilarityCalculator()
 
-        self.dataset['normalized_data_scores'] = self.data_scorer_calculator.calculate_data_score(self.dataset['publication_date'])
-        self.dataset.loc[:, 'sentences'] = self.dataset.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
+        if os.path.exists(self.path_to_vectorizer):
 
-        self.tfidf_matrix = self.tfidf_vectorizer.fit_transform(self.dataset['sentences'].values)
+            with open(self.path_to_vectorizer, 'rb') as file:
+                self.tfidf_vectorizer = pickle.load(file)
+
+        else:
+           self.tfidf_vectorizer =  self.train()
 
     # Docs são um dataframe [title, publication_date]
 
@@ -65,3 +69,24 @@ class RunRecomendationSystem:
 
         for idx in self.idx_recomendations:
             print(self.new_doc["title"].values[idx])
+
+    def train(self, path_to_csv = "../../dataset/notices.csv"):
+
+        self.dataset = pd.read_csv(path_to_csv, low_memory=False, encoding="UTF-8")
+
+        self.dataset['publication_date'] = pd.to_datetime(self.dataset['publication_date'], format='mixed', errors='coerce')
+        self.tfidf_vectorizer = TfidfVectorizer()
+
+
+        self.dataset['normalized_data_scores'] = self.data_scorer_calculator.calculate_data_score(self.dataset['publication_date'])
+        self.dataset.loc[:, 'sentences'] = self.dataset.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
+
+        self.tfidf_matrix = self.tfidf_vectorizer.fit_transform(self.dataset['sentences'].values)
+
+        with open(self.path_to_vectorizer, 'wb') as file:
+            pickle.dump(self.tfidf_vectorizer, file)
+
+        print(f"...Model Vectorize Saved in: {self.path_to_vectorizer} ...")
+
+        return self.tfidf_vectorizer
+
