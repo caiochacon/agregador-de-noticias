@@ -99,7 +99,7 @@ ITEM_PIPELINES = {
 
 
 FEEDS = {
-    'output/notices.csv': {
+    'data/notices.csv': {
         'format': 'csv',
         'encoding': 'utf8',
         'store_empty': False,

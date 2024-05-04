@@ -8,7 +8,15 @@
 from itemadapter import ItemAdapter
 import re
 from datetime import datetime, timedelta
+import pandas as pd
 
+class ScrapyDataset(object):
+    def process_item(self, item, spider):
+        new_data = pd.to_datetime(item["publication_date"], format='mixed', errors='coerce')
+        item["publication_date"] = new_data
+        return item
+    
+    
 class ScrapyG1Pipeline(object):
     def process_item(self, item, spider):
         
