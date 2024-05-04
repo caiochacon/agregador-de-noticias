@@ -1,7 +1,3 @@
-# para rodar basta executar o comando python3 run_all_spiders.py
-# ou python3 agregador-de-noticias/src/scrapy_all/run_all_spiders.py 
-import sys
-print(f'Syspath : {sys.path}')
 from .scrapy_all.spiders.g1 import G1Spider as g1
 from .scrapy_all.spiders.folha import FolhaSpider as folha
 from .scrapy_all.spiders.cartacapital import CartacapitalSpider as cartacapital

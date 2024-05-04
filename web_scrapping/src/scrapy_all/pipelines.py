@@ -14,10 +14,15 @@ import os
 class PandasCsvPipeline:
     def __init__(self):
         self.items = []
+        self.data_path = '../../../data/notices.csv'
 
     def open_spider(self, spider):
         # Verifica se o arquivo já existe
-        self.file_exists = os.path.exists('../../data/notices.csv')
+        self.file_exists = os.path.exists(self.data_path)
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        print('File exists:', self.file_exists)
+        print('Path:', self.data_path)
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
     def close_spider(self, spider):
         # Cria um DataFrame a partir da lista de itens
@@ -25,7 +30,7 @@ class PandasCsvPipeline:
 
         if self.file_exists:
             # Se o arquivo já existir, carregue-o e adicione os novos dados
-            existing_df = pd.read_csv('../../data/notices.csv', encoding='utf-8')
+            existing_df = pd.read_csv(self.data_path, encoding='utf-8')
             df = pd.concat([existing_df, df], ignore_index=True)
         
         # Remove duplicatas e valores nulos
@@ -35,7 +40,7 @@ class PandasCsvPipeline:
         
         
         # Salva no modo de adição (append), sem índice
-        df.to_csv('../../data/notices.csv', index=False, encoding='utf-8')
+        df.to_csv(self.data_path, index=False, encoding='utf-8')
 
     def process_item(self, item, spider):
         # Adiciona o item à lista

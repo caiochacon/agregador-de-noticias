@@ -113,3 +113,20 @@ ITEM_PIPELINES = {
 #         },
 #     },
 # }
+
+
+# Suppress debug logs for the 'scrapy' module
+LOG_LEVEL = 'INFO'
+# LOG_STDOUT = True
+
+# Example of setting log levels for specific modules
+# LOGGING = {
+#     'loggers': {
+#         'scrapy': {
+#             'level': 'ERROR',
+#         },
+#         'twisted': {
+#             'level': 'ERROR',
+#         },
+#     },
+# }

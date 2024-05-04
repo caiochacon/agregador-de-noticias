@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from models import db
 from models.usuario import Usuario
-from web_scrapping.src.scrapy_runner import ScrapyRunner
+
 
 usuario = Blueprint('usuario', __name__, url_prefix='/usuario')
 
@@ -19,10 +19,21 @@ def criarUsuario():
     db.session.add(novo_usuario)
     db.session.commit()
     db.session.refresh(novo_usuario)
-    return novo_usuario.__dict__
+    return response(novo_usuario)
 
 @usuario.route('/<int:id_usuario>', methods=["GET"])
-def getBy(id_usuario):
-    print(f'Usuario id: {id_usuario}')
-    ScrapyRunner.run()
-    return []
+def getById(id_usuario):
+    usuario = db.session.query(Usuario).filter(Usuario.id_usuario == id_usuario).first()
+    if usuario is None:
+        return {"error": f"Não existe usuário com id {id_usuario}."}, 422
+
+    return response(usuario)
+
+
+def response(usuario: Usuario):
+    return {
+        "id_usuario": usuario.id_usuario,
+        "nome": usuario.nome,
+        "email": usuario.email,
+        "assinante": usuario.assinante
+    }
