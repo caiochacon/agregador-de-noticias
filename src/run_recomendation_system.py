@@ -15,8 +15,8 @@ class RunRecomendationSystem:
         self.dataset = dataset.copy()
 
         self.dataset['publication_date'] = pd.to_datetime(self.dataset['publication_date'], format='mixed', errors='coerce')
-        self.dataset = self.dataset.dropna(subset=['title','publication_date'])
-        self.dataset = self.dataset.drop_duplicates(subset=['title'])
+       # self.dataset = self.dataset.dropna(subset=['title','publication_date'])
+       # self.dataset = self.dataset.drop_duplicates(subset=['title'])
 
         self.data_scorer_calculator = DataScorerCalculator()
         self.sentece_cleaner = SentenceCleaner()
