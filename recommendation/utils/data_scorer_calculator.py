@@ -13,4 +13,8 @@ class DataScorerCalculator:
         return self._normalyze_data_score(self.date_scores)
 
     def _normalyze_data_score(self, date_scores):
-        return [(score - self.min_score) / (self.max_score - self.min_score) for score in date_scores]
+        
+        if self.max_score == self.min_score:
+            return [1.0 if score == self.max_score else 0.0 for score in date_scores]
+        else:
+            return [(score - self.min_score) / (self.max_score - self.min_score) for score in date_scores]
