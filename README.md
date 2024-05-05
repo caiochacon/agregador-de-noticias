@@ -10,6 +10,9 @@ Link do documento de requisitos: https://docs.google.com/document/d/1o3a4nqXop7V
 
 O sistema recebe um conjunto de 9 notícias e gera 27 notícias recomendadas para cada uma das notícias principais (3 para cada):
 
+### Funcionando
+
+![Sistema de recomendação](agregador-de-noticias/recommendation/utils/funcionamento1.png)
 
 ### Execução
 
@@ -20,6 +23,8 @@ O sistema recebe um conjunto de 9 notícias e gera 27 notícias recomendadas par
 `pip install -r requirements.txt`
 
 `cd agregador-de-noticias/recommendation`
+
+Cole em seu terminal:
 
 ```bash
 python3 - << END
