@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicação Web</title>
+    <link rel="stylesheet" href="fundo.css"> 
+</head>
+<body>
+<div id="janelalogin" class="popUp">
+    <h2>Login</h2>
+    <form action="/login" method="POST" id="form-login">
+        <input id="emaillogin" class="janelainput" placeholder="Email" name="email">
+        <input id="senhalogin" class="janelainput" placeholder="Senha" type="password" name="password">
+        <div id="botaojanela">
+            <button id="botaoentrar" class="botaoconta" type="submit" onclick="clicouBotaoEntrar()">Entrar</button>
+            <button id="botaovoltar" class="botaoconta" onclick="clicouBotaoVoltarJanela()">Voltar</button>
+        </div>   
+    </form>
+</div>
+<script src="scripts.js"></script> 
+</body>
+</html>

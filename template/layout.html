@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicação Web</title>
+    <link rel="stylesheet" href="fundo.css"> 
+</head>
+<body>
+    <div id="loadingScreen">
+        <img id="loading" src="image1.png" width="50px" height="50px">
+    </div>
+    <header>
+        <div id="linha1">
+            <div >
+                <h2 style="font-size: 4vh;">CI News</h2>
+            </div>
+            <div id="blocoA">
+                <input id="botaobuscar" placeholder="Buscar...">
+                <div id="linha2">
+                    <button id="inicio" class="botaolinha2" onclick="clicouBotaoInicio()">Inicio</button>
+                    <button id="paravoce" class="botaolinha2" onclick="clicouBotaoParaVoce()">Para Você</button>
+                    <button id="salvos" class="botaolinha2" onclick="clicouBotaoSalvos()">Salvos</button>
+                </div>   
+            </div>
+            <div id="secaocadastro">
+                <button id="login" class="botaoconta" onclick="clicouBotaoLogin()">Login</button>
+                <button id="cadastro" class="botaoconta" onclick="clicouBotaoCadastro()">Cadastro</button>
+                <button id="membro" class="botaoconta" onclick="clicouBotaoLogin()">Assinatura</button>
+            </div>
+        </div>
+
+    <script src="scripts.js"></script> 
+</body>
+</html>
