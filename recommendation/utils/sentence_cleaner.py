@@ -16,11 +16,13 @@ class SentenceCleaner:
 
     def clear_sentence(self, sentence):
 
+        sentence = self.__remove_dates(sentence)
+        sentence = self.__remove_numbers(sentence)
+        sentence = sentence.strip()
         doc = self.nlp.tokenizer(str(sentence))
         tokens_list = [s.text for s in doc if s.text not in self.remove_chars]
-        preprocessed_sentence = ' '.join(tokens_list)
-        preprocessed_sentence = self.__remove_dates(preprocessed_sentence)
-        preprocessed_sentence = self.__remove_numbers(preprocessed_sentence)
+        preprocessed_sentence = ' '.join(tokens_list).strip()
+        preprocessed_sentence = self.__replace_multiple_spaces(preprocessed_sentence)
 
         return preprocessed_sentence.strip()
 
@@ -29,5 +31,9 @@ class SentenceCleaner:
         return re.sub(pattern, '', text)
 
     def __remove_numbers(self, text):
-        sentence_without_numbers = re.sub(r'\d+', '', text)
+        sentence_without_numbers = re.sub(r'\d+', '', text)        
         return sentence_without_numbers
+    
+    def __replace_multiple_spaces(self, text):
+        cleaned_sentence = re.sub(r'\s{2,}', ' ', text)
+        return cleaned_sentence

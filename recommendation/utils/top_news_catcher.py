@@ -6,6 +6,8 @@ class TopNewsCatcher:
     def catch_top_news(self, path_to_csv):
 
         self.df = pd.read_csv(path_to_csv, low_memory=False, encoding="UTF-8")
+        self.df = self.df.dropna(subset=['title','publication_date'])
+        self.df = self.df.drop_duplicates(subset=['title'])
         self.df = self.df[self.df['title'] != 'title']
 
         dataset_top_news = self._get_news(self.df)
@@ -17,7 +19,8 @@ class TopNewsCatcher:
     def _get_news(self, df):
 
         results = []
-        groups = df.groupby('source')
+        df_not_charges = df[(df['category'] != "quadrinhos") & (df['category'] != "charges")]
+        groups = df_not_charges.groupby('source')
 
         for name_groups, group in groups:
             

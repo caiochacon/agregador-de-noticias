@@ -3,8 +3,8 @@ import pandas as pd
 
 from flask import Blueprint
 from web_scrapping.src.scrapy_runner import ScrapyRunner
-from recommendation.src.run_recomendation_system import RunRecomendationSystem
-from recommendation.src.top_news_catcher import TopNewsCatcher
+from recommendation.src.run_recommendation_system import RunRecomendationSystem
+from recommendation.utils.top_news_catcher import TopNewsCatcher
 
 trigger = Blueprint('trigger', __name__, url_prefix='/trigger')
 
@@ -17,10 +17,7 @@ def triggerWebScrapping():
   print(f'>>>>>>> {notices_path}')
   dataset_top_news, df_to_recomendations = TopNewsCatcher().catch_top_news(path_to_csv=notices_path)
 
-  # Retorna as x notícias principais e 3 notícias relacionadas a cada uma delas
-  dataset = pd.read_csv(notices_path, low_memory=False, encoding="UTF-8")
-  dataset_origin = dataset.iloc[:-1000]
-  recommendation = RunRecomendationSystem(dataset=dataset_origin)
+  recommendation = RunRecomendationSystem()
   dataset_topnews, dataset_recomendations = recommendation.run(dataset_top_news, df_to_recomendations)
 
   print(dataset_topnews.head())
