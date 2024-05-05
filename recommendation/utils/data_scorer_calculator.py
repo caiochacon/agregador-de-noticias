@@ -4,6 +4,7 @@ import numpy as np
 class DataScorerCalculator:
 
     def calculate_data_score(self, dates):
+        
         today = datetime.today()
         self.date_scores = [(today - date).days for date in dates]
         self.min_score = np.min(self.date_scores)

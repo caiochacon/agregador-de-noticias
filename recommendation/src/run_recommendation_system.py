@@ -16,7 +16,7 @@ COEF_WHEIGHT_DATE = 20
 
 class RunRecomendationSystem:
 
-    def __init__(self, path_to_vectorizer = "../models/tfidf_vectorizer.pkl"):
+    def __init__(self, path_to_vectorizer = "models/tfidf_vectorizer.pkl"):
 
         self.path_to_vectorizer = path_to_vectorizer
 
@@ -34,33 +34,29 @@ class RunRecomendationSystem:
 
     # Docs são um dataframe [title, publication_date]
 
-    def run(self, dataset_sentences, new_docs):
+    def run(self, dataset_topnews, dataset_to_recommendation):
         
-        self.dataset_sentences = dataset_sentences.copy()
+        self.dataset_topnews = dataset_topnews.copy()
 
-        self.new_doc = new_docs.copy()
-        
+        self.dataset_to_recommendation = dataset_to_recommendation.copy()
+     
+        self.dataset_to_recommendation['publication_date'] = pd.to_datetime(self.dataset_to_recommendation['publication_date'], format='mixed')
+        self.dataset_to_recommendation['normalized_data_scores'] = self.data_scorer_calculator.calculate_data_score(self.dataset_to_recommendation['publication_date'])
+        self.dataset_to_recommendation.loc[:, 'sentences'] = self.dataset_to_recommendation.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
+        self.dataset_topnews.loc[:, 'sentences'] = self.dataset_topnews.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
 
-        self.new_doc['publication_date'] = pd.to_datetime(self.new_doc['publication_date'], format='mixed', errors='coerce')
-
-        self.new_doc['normalized_data_scores'] = self.data_scorer_calculator.calculate_data_score(self.new_doc['publication_date'])
-        self.new_doc.loc[:, 'sentences'] = self.new_doc.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
-
-        self.dataset_sentences.loc[:, 'sentences'] = dataset_sentences.loc[:, 'title'].apply(self.sentece_cleaner.clear_sentence)
-        #new_sent = self.sentece_cleaner.clear_sentence(raw_sentence)
-        #new_sent = self.tfidf_vectorizer.transform([new_sent])
-
-        new_docs_tfidf_matrix = self.tfidf_vectorizer.transform(self.new_doc['sentences'].values)
+        dataset_to_recommendations_tfidf_matrix = self.tfidf_vectorizer.transform(self.dataset_to_recommendation['sentences'].values)
         self.idx_recomendations = []
 
-        for new_sentence in self.dataset_sentences['sentences'].values:
+        for new_sentence in self.dataset_topnews['sentences'].values:
+
             new_sent = self.sentece_cleaner.clear_sentence(new_sentence)
             new_sent = self.tfidf_vectorizer.transform([new_sent])
-            self.idx_recomendations.extend(self.sentences_sym_calculator.sym_by_date(new_sent, new_docs_tfidf_matrix, self.new_doc['normalized_data_scores'].values, 20, 3))
+            self.idx_recomendations.extend(self.sentences_sym_calculator.sym_by_date(new_sent, dataset_to_recommendations_tfidf_matrix, self.dataset_to_recommendation['normalized_data_scores'].values, COEF_WHEIGHT_DATE, 3))
 
-        dataset_recomendations = pd.DataFrame(self.new_doc.iloc[self.idx_recomendations])
+        dataset_recomendations = pd.DataFrame(self.dataset_to_recommendation.iloc[self.idx_recomendations])
 
-        return self.dataset_sentences, dataset_recomendations
+        return self.dataset_topnews, dataset_recomendations
     
     def show_recomendations(self):
 
@@ -70,7 +66,7 @@ class RunRecomendationSystem:
         for idx in self.idx_recomendations:
             print(self.new_doc["title"].values[idx])
 
-    def train(self, path_to_csv = "../../dataset/notices.csv"):
+    def train(self, path_to_csv = "../dataset/notices.csv"):
 
         self.dataset = pd.read_csv(path_to_csv, low_memory=False, encoding="UTF-8")
 
