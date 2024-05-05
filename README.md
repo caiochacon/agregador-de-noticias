@@ -12,7 +12,7 @@ O sistema recebe um conjunto de 9 notícias e gera 27 notícias recomendadas par
 
 ### Funcionando
 
-![Sistema de recomendação](agregador-de-noticias/recommendation/utils/funcionamento1.png)
+![Sistema de recomendação](recommendation/utils/funcionamento1.png)
 
 ### Execução
 
