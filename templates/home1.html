@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>notiCIario</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+</head>
+
+<body>
+    <section class="hero is-primary is-fullheight">
+
+
+        <div class="hero-head">
+            <nav class="navbar">
+                <div class="container">
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-end">
+                            <a href="{{ url_for('home') }}" class="navbar-item">
+                                Página inicial
+                            </a>
+                            <a href="{{ url_for('profile') }}" class="navbar-item">
+                                Perfil
+                            </a>
+                            <a href="{{ url_for('login') }}" class="navbar-item">
+                                Login
+                            </a>
+                            <a href="{{ url_for('signup') }}" class="navbar-item">
+                                Cadastro
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="navbar-item">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div id="container1" class="container">
+            <div id="noticia_1" class="noticia">
+                <div id="principal_1" class="principal">
+                    <img id="imagem_1" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_1" class="conteudo">
+                        <img id="icone_1" class="icone" src="image4.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_1" class="relacionadas">
+                    <div id="conteudorelacionado_1_1" class="conteudorelacionado"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_1_2" class="conteudorelacionado"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_1_3" class="conteudorelacionado"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-body">
+            <div class="container has-text-centered">
+               {% block content %}
+               {% endblock %}
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

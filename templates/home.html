@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Notícias</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body, html{
+            padding: 0;
+            margin: 0;
+            background-color: #263239;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+
+        header{
+            position: fixed;
+            width: 100vw;
+            background-color: #192632;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #linha1{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            color: white;
+        }
+
+        #botaobuscar{
+            margin-top: 40px;
+            width: 30vw;
+            border-radius: 10px;
+            background-color: #5C666B;
+            border: 2;
+            border-color: transparent;
+            height: 3vh;
+            color: rgba(255, 255, 255, 0.8);
+            text-indent: 30px;
+            transition: .4s;
+        }
+
+        #botaobuscar:hover{
+            border-color: #0044ff;
+        }
+
+
+        .botaoconta{
+            font-size: 1.8vh;
+            border-radius: 5px;
+            border: 2;
+            border-color: transparent;
+            margin: 1vh;
+            padding-inline: 10px;
+            background-color: #607477;
+            color: white;
+            transition: .4s;
+            
+        }
+
+        .botaoconta:hover{
+            border-color: rgb(0, 106, 255);
+        }
+
+        #linha2{
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .botaolinha2{
+            font-size: 2vh;
+            margin-inline: 5px;
+            padding: 5px;
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            border-bottom: 1;
+            border-width: 4px;
+            border-color: transparent;
+            color: rgb(255, 255, 255, 0.6);
+            background-color: transparent;
+            font-weight: bold;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+
+            transition: .4s;
+
+        }
+
+        .botaolinha2:hover{
+            background-color: #263239;
+        }
+
+        .botaoconta, .botaolinha2:hover{
+            cursor: pointer;
+        }
+
+        #container{
+            background-color: white;
+
+        }
+
+        #botaobuscar::placeholder{
+            color: rgba(255, 255, 255, 0.8);;
+        }
+
+        .popUp-background{
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(1px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popUp{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #84959E;
+            padding: 25px;
+            border: 0px;
+            border-radius: 20px;
+            color: white;
+
+
+        }
+
+        .janelainput{
+            border: 0;
+            margin: 10px;
+            height: 4vh;
+            border-radius: 5px;
+            text-indent: 10px;
+            width: 20vw;
+        }
+
+        #janelalogin{
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        #janelacadastro{
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        #mainbody{
+            display: none;
+            justify-content:space-around;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container{
+            margin-top: 150px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 10px;
+            max-width: 100vw;
+            justify-content: center;
+        }
+
+        .noticia{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 20px;
+            width: 55vh;
+            height: 37vh;
+            background-color: #5C666B;
+            transition: .4s;
+        }
+
+        .noticia:hover{
+            background-color: #436272;
+        }
+
+        .principal{
+            width: 25vh;
+            margin-right: 10px;
+            padding: 4px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            transition: .4s;
+        }
+
+        .principal:hover{
+            background-color: #8c9eae;
+            cursor: pointer;
+        }
+
+        .relacionadas{
+            width: 25vh;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+
+        }
+
+
+
+        .conteudo{
+            font-size: 2vh;
+            color: white;
+            text-align: left;
+            margin: 0px;
+            word-wrap: break-word;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            border-radius: 10px;
+        }
+
+        .conteudorelacionado{
+            font-size: 2vh;
+            color: white;
+            text-align: left;
+            margin: 0px;
+            word-wrap: break-word;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            border-radius: 10px;
+            transition: .4s;
+        }
+
+        .conteudorelacionado:hover{
+            background-color: #8c9eae;
+            cursor: pointer;
+        }
+
+
+
+        footer{
+            height: 10vh;
+        }
+
+        #loadingScreen{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vh;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        #loading{
+            animation: load 1.5s ease infinite;
+        }
+
+        @keyframes load{
+            from{
+                transform: rotate(90deg);
+            }to{
+                transform: rotate(450deg);
+            }
+        }
+
+        .noticiaJanela{
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            width: 60vh;
+            height: 75vh;
+            background-color: rgb(47, 84, 105);
+            padding: 20px;
+        }
+
+        #temporario{
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #salvar{
+            font-size: 3vh;
+            border: 1;
+            border-color: transparent;
+            background-color: rgb(88, 116, 138);    
+        }
+
+        #slavar:hover{
+            border-color: blue;
+        }
+
+        .icone{
+            border-radius: 5px;
+            margin-top: 5px;
+            width: 3vh;
+        }
+
+        .solicita{
+            display: none;
+            position: fixed;
+            margin-top: 20vh;
+            background-color: rgb(46, 81, 130);
+            color: white;
+            padding: 6px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div id="linha1">
+            <div >
+                <h2 style="font-size: 4vh;">CI News</h2>
+            </div>
+            <div id="blocoA">
+                <input id="botaobuscar" placeholder="Buscar...">
+                <div id="linha2">
+                    <a id="inicio" class="botaolinha2" py-onClick="teste()">Inicio</a>
+                    <a id="paravoce" class="botaolinha2" py-onClick="teste()" >Para Você</a>
+                    <a id="salvos" class="botaolinha2" py-onClick="teste()" >Salvos</a>
+                </div>   
+            </div>
+            <div id="secaocadastro">
+                <a id="login" href="{{ url_for('login') }}" class="botaoconta" >Login</a>
+                <a id="cadastro" href="{{ url_for('signup') }}" class="botaoconta" >Cadastro</a>
+                <a id="membro" href="{{ url_for('login') }}" class="botaoconta" >Assinatura</a>
+            </div>
+        </div>
+
+        <section class="pyscript">
+        <py-script>
+
+            def teste():
+                print("Hello")
+            
+        </py-script>
+    </section>
+
+
+
+    <main id="mainbody">
+        <div id="container1" class="container">
+            <div id="noticia_1" class="noticia">
+                <div id="principal_1" class="principal" onclick="expande(this)">
+                    <img id="imagem_1" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_1" class="conteudo">
+                        <img id="icone_1" class="icone" src="image4.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_1" class="relacionadas">
+                    <div id="conteudorelacionado_1_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_1_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_1_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_2" class="noticia">
+                <div id="principal_2" class="principal" onclick="expande(this)">
+                    <img id="imagem_2" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_2" class="conteudo">
+                        <img id="icone_2" class="icone" src="image2.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_2" class="relacionadas">
+                    <div id="conteudorelacionado_2_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_2_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_2_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_3" class="noticia">
+                <div id="principal_3" class="principal" onclick="expande(this)">
+                    <img id="imagem_3" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_3" class="conteudo">
+                        <img id="icone_3" class="icone" src="image2.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_3" class="relacionadas">
+                    <div id="conteudorelacionado_3_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_3_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_3_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_4" class="noticia">
+                <div id="principal_4" class="principal" onclick="expande(this)">
+                    <img id="imagem_4" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_4" class="conteudo">
+                        <img id="icone_4" class="icone" src="image4.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_4" class="relacionadas">
+                    <div id="conteudorelacionado_4_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_4_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_4_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_5" class="noticia">
+                <div id="principal_5" class="principal" onclick="expande(this)">
+                    <img id="imagem_5" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_5" class="conteudo">
+                        <img id="icone_5" class="icone" src="image2.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_5" class="relacionadas">
+                    <div id="conteudorelacionado_5_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_5_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_5_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_6" class="noticia">
+                <div id="principal_6" class="principal" onclick="expande(this)">
+                    <img id="imagem_6" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_6" class="conteudo">
+                        <img id="icone_6" class="icone" src="image4.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_6" class="relacionadas">
+                    <div id="conteudorelacionado_6_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_6_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_6_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_7" class="noticia">
+                <div id="principal_7" class="principal" onclick="expande(this)">
+                    <img id="imagem_7" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_7" class="conteudo">
+                        <img id="icone_7" class="icone" src="image2.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_7" class="relacionadas">
+                    <div id="conteudorelacionado_7_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_7_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_7_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_8" class="noticia">
+                <div id="principal_8" class="principal" onclick="expande(this)">
+                    <img id="imagem_8" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_8" class="conteudo">
+                        <img id="icone_8" class="icone" src="image2.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_8" class="relacionadas">
+                    <div id="conteudorelacionado_8_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_8_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_8_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+            <div id="noticia_9" class="noticia">
+                <div id="principal_9" class="principal" onclick="expande(this)">
+                    <img id="imagem_9" src="Captura de tela 2023-05-01 215707.png">
+                    <div id="conteudo_9" class="conteudo">
+                        <img id="icone_9" class="icone" src="image2.png">
+                        <h3>Homem vira cão no interior da paraíba</h3>Conteúdo da publicação "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel libero vestibulum, tristique tortor vel, eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis."
+                    </div>
+                </div>
+                <div id="relacionadas_9" class="relacionadas">
+                    <div id="conteudorelacionado_9_1" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p></p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_9_2" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image2.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                    <div id="conteudorelacionado_9_3" class="conteudorelacionado" onclick="expande(this)"><img class="icone" src="image.png"><p>eleifend metus. In auctor, libero ut faucibus lobortis, metus mauris tempus ipsum, a tempus ex dolor sed libero. Integer at ex ac sapien fermentum ultrices nec sit amet tortor. Nam euismod purus quis lectus consequat vestibulum. Sed dapibus euismod augue, at eleifend nisl consequat nec. Cras placerat lacus libero, id tempor odio tristique id. Nulla facilisi. Integer pharetra massa nec metus facilisis dignissim. Morbi interdum elit sed odio ultricies, at placerat libero scelerisque. Fusce commodo ultricies lorem, et fringilla orci. Nunc ac mi id enim suscipit semper. Suspendisse eu nunc ut libero congue lacinia. Phasellus vestibulum nulla id vestibulum efficitur. Sed vestibulum nisl magna, non ultricies mauris feugiat in. Vivamus rutrum metus quis varius fringilla. Sed ultricies justo at ligula vehicula, id tempor elit condimentum. Donec ullamcorper vehicula purus, in pulvinar neque scelerisque at. Sed suscipit sem in arcu consectetur, sit amet rhoncus purus fringilla. Maecenas et ligula efficitur, ullamcorper nisi et, dapibus nisi. Cras at sapien quis velit consequat molestie. Morbi eu ex ut urna tempor rutrum eu nec dui. Integer sodales velit ac ultrices ultricies. Cras nec eros mi. Vivamus vitae mauris eu felis dignissim pulvinar. Vivamus in risus ac sapien convallis feugiat ac vel dui. Cras luctus, neque et ultricies convallis, eros dolor finibus risus, vel convallis elit elit et elit. Sed interdum tincidunt est, in auctor est molestie nec. Mauris accumsan rutrum turpis, sed efficitur ex gravida sit amet. Nam luctus, quam eget laoreet ultricies, nunc tortor tempus libero, et posuere ipsum risus ac magna. Integer nec lectus vel dolor suscipit auctor. Etiam efficitur, nulla eu luctus mattis, ipsum ex interdum sem, non congue arcu neque et sem. Aliquam erat volutpat. Integer non urna a nibh dictum iaculis.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

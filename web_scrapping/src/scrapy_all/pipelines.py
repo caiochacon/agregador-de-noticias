@@ -10,11 +10,22 @@ import re
 from datetime import datetime, timedelta
 import pandas as pd
 import os
+import sys
 
 class PandasCsvPipeline:
+
     def __init__(self):
+
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        data_folder = os.path.abspath(os.path.join(current_dir, "..", "..","data"))
+        file_name = "notices.csv"
+        file_path = os.path.join(data_folder, file_name)
         self.items = []
-        self.data_path = '/home/vinicius_olzon/Documents/ENG_SOFTWARE/backend/flask_app/agregador_de_noticias_recommendation_system/dataset/noiticasGeradas.csv'
+        print(file_path)
+        print("*"*200)
+        self.data_path = file_path
+
+        print(file_path)
 
     def open_spider(self, spider):
         # Verifica se o arquivo já existe
@@ -37,8 +48,11 @@ class PandasCsvPipeline:
         df = df.drop_duplicates(subset=['title'])  # Remove duplicatas
         df = df.dropna(how='any')  # Remove valores nulos
         df["publication_date"] = pd.to_datetime(df["publication_date"], format='mixed', errors='coerce')
-        df['title'] = df['title'].map(lambda x: x.replace('"', "-"))
-        df['text'] = df['text'].map(lambda x: x.replace("'", "-"))
+        df['title'] = df['title'].astype(str).map(lambda x: x.replace('"', "-"))
+        df['title'] = df['title'].astype(str).map(lambda x: x.replace("'", "-"))
+
+        df['text'] = df['text'].astype(str).map(lambda x: x.replace('"', "-"))
+        df['text'] = df['text'].astype(str).map(lambda x: x.replace("'", "-"))
         
         # Salva no modo de adição (append), sem índice
         df.to_csv(self.data_path, index=False, encoding='utf-8')
