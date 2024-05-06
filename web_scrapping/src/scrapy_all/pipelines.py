@@ -10,11 +10,22 @@ import re
 from datetime import datetime, timedelta
 import pandas as pd
 import os
+import sys
 
 class PandasCsvPipeline:
+
     def __init__(self):
+
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        data_folder = os.path.abspath(os.path.join(current_dir, "..", "..","data"))
+        file_name = "notices.csv"
+        file_path = os.path.join(data_folder, file_name)
         self.items = []
-        self.data_path = '../../../data/notices.csv'
+        print(file_path)
+        print("*"*200)
+        self.data_path = file_path
+
+        print(file_path)
 
     def open_spider(self, spider):
         # Verifica se o arquivo já existe

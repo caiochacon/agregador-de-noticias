@@ -16,7 +16,7 @@ COEF_WHEIGHT_DATE = 20
 
 class RunRecomendationSystem:
 
-    def __init__(self, path_to_vectorizer = "recommendation/models/tfidf_vectorizer.pkl"):
+    def __init__(self, path_to_data = "dataset/notices.csv", path_to_vectorizer = "recommendation/models/tfidf_vectorizer.pkl"):
 
         self.path_to_vectorizer = path_to_vectorizer
 
@@ -30,10 +30,9 @@ class RunRecomendationSystem:
                 self.tfidf_vectorizer = pickle.load(file)
 
         else:
-           self.tfidf_vectorizer =  self.train()
+           self.tfidf_vectorizer =  self.train(path_to_data)
 
     # Docs são um dataframe [title, publication_date]
-
     def run(self, dataset_topnews, dataset_to_recommendation):
         
         self.dataset_topnews = dataset_topnews.copy()
@@ -66,7 +65,7 @@ class RunRecomendationSystem:
         for idx in self.idx_recomendations:
             print(self.new_doc["title"].values[idx])
 
-    def train(self, path_to_csv = "dataset/notices.csv"):
+    def train(self, path_to_csv):
 
         self.dataset = pd.read_csv(path_to_csv, low_memory=False, encoding="UTF-8")
 
