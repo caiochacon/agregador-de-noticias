@@ -12,7 +12,7 @@ from recommendation.utils.sentence_cleaner import SentenceCleaner
 from recommendation.utils.data_scorer_calculator import DataScorerCalculator
 from recommendation.utils.sentences_similarity_calculator import SentenceSimilarityCalculator
 
-COEF_WHEIGHT_DATE = 20
+COEF_WHEIGHT_DATE = 50
 
 class RunRecomendationSystem:
 
