@@ -9,7 +9,7 @@ class NoticiaTable(Connection):
         CREATE TABLE IF NOT EXISTS noticia(
             id_noticia SERIAL PRIMARY KEY NOT NULL,
             titulo VARCHAR(255) NOT NULL,
-            data_publicacao DATE NOT NULL,
+            data_publicacao TIMESTAMP NOT NULL,
             categoria VARCHAR(255) NOT NULL,
             texto TEXT NOT NULL,
             fonte VARCHAR(255) NOT NULL,
